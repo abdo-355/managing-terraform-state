@@ -43,11 +43,5 @@ resource "aws_s3_bucket_public_access_block" "public_access" {
 
 # Configure S3 backend with native locking (no DynamoDB needed)
 terraform {
-  backend "s3" {
-    bucket       = "terraform-state-bucket-355"
-    key          = "global/s3/terraform.tfstate"
-    region       = "us-east-1"
-    encrypt      = true
-    use_lockfile = true
-  }
+  backend "s3" {}
 }
