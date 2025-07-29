@@ -8,12 +8,16 @@ resource "aws_launch_template" "example" {
   instance_type          = "t2.micro"
   vpc_security_group_ids = [aws_security_group.instance.id]
 
-  user_data = base64encode(<<-EOF
-    #!/bin/bash
-    echo "Hello, World!" > index.html
-    nohup busybox httpd -f -p ${var.server_port} &
-  EOF
-  )
+  user_data = base64encode(templatefile("user-data.sh", {
+    server_port = var.server_port
+    db_address  = data.terraform_remote_state.db.outputs.address
+    db_port     = data.terraform_remote_state.db.outputs.port
+  }))
+
+  # Required when using a launch configuration with an auto scaling group.
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 
@@ -151,6 +155,17 @@ resource "aws_lb_listener_rule" "asg" {
     }
   }
 }
+
+data "terraform_remote_state" "db" {
+  backend = "s3"
+  config = {
+    bucket = "terraform-state-bucket-355"
+    key    = "stage/data-stores/mysql/terraform.tfstate"
+    region = "us-east-1"
+  }
+}
+
+
 
 
 
