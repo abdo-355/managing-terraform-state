@@ -7,10 +7,3 @@ module "webserver_cluster" {
 
   server_port = 8080
 }
-
-
-
-
-
-
-
