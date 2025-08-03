@@ -9,6 +9,10 @@ module "webserver_cluster" {
   server_port            = 8080
   db_remote_state_bucket = "terraform-state-bucket-355"
   db_remote_state_key    = "stage/data-stores/mysql/terraform.tfstate"
+
+  instance_type = "t2.micro"
+  min_size      = 2
+  max_size      = 10
 }
 
 
