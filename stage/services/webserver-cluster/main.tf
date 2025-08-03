@@ -5,7 +5,10 @@ provider "aws" {
 module "webserver_cluster" {
   source = "../../../modules/services/webserver-cluster"
 
-  server_port = 8080
+  cluster_name           = "webservers-stage"
+  server_port            = 8080
+  db_remote_state_bucket = "terraform-state-bucket-355"
+  db_remote_state_key    = "stage/data-stores/mysql/terraform.tfstate"
 }
 
 
