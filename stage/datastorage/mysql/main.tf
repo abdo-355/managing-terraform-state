@@ -16,6 +16,14 @@ resource "aws_db_instance" "example" {
 
 
 terraform {
+  required_version = ">= 1.5.0"
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.0"
+    }
+  }
+
   backend "s3" {
     bucket       = "terraform-state-bucket-355"
     key          = "stage/data-stores/mysql/terraform.tfstate"
